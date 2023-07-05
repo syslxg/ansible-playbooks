@@ -1,0 +1,22 @@
+---
+- name: Install Notepad++
+  hosts: all
+  gather_facts: false
+  vars:
+    npp_version: "8.5.4"
+    npp_url: "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v{{ npp_version }}/npp.{{ npp_version }}.Installer.x64.exe"
+    user_password: "Password1!"
+  tasks:
+    - name: Download Notepad++ installer
+      win_get_url:
+        url:  "{{ npp_url }}"
+        dest: C:\Temp\npp.Installer.x64.exe
+
+    - name: Install Notepad++
+      win_shell: 'C:\Temp\npp.Installer.x64.exe /S'
+
+    - name:  create user ces-user1
+      win_user:
+        name: ces-user1
+        password: "{{ user_password }}"
+        state: present
